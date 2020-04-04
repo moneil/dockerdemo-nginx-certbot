@@ -1,4 +1,4 @@
-# dockerdemo-nginx-certbot: setting up a website with Docker, Nginx and Certbot auto-renewed certificates
+# dockerdemo-nginx-certbot: setting up a secure NGNIX website with Docker using Certbot for auto-renewed SSL certificates
 
 April 04, 2020
 
