@@ -1,8 +1,10 @@
-# Setting up a website with Docker, Nginx and Certbot
+# dockerdemo-nginx-certbot: setting up a website with Docker, Nginx and Certbot auto-renewed certificates
 
 April 04, 2020
 
-This is the full project source and directory layout behind the *to be written* Blackboard article [**Dockerizing NGINX**](https://docs.blackboard.com/learn/Dockerizing%20NGINX.html) which presents in more detail how to dockerize a static website with Nginx, automatically renew SSL certificates for your domain with Certbot and deploying to your Docker host.
+<!--This is the full project source and directory layout behind the *(to be written)* Blackboard developer docs Docker demo document: [**Dockerizing NGINX for https**](https://docs.blackboard.com/learn/Dockerizing%20NGINX.html) which presents in more detail how to dockerize an SSL-secured website with Nginx, automatically renew SSL certificates for your domain with Certbot, and deploy to your Docker host. -->
+
+THis is the full project source, directory layout, for the deployment of a dockerized SSL-secured NGINX server which automantically renews SSL certificates for your domain using Certbot.
 
 This setup is useful for routing microservices, and LTI or REST applications using NGINX.
 
