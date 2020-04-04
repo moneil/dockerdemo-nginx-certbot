@@ -2,7 +2,7 @@
 
 April 04, 2020
 
-This is the full project source and directory layout behind the *to be written* Blackboard article [**How to dockerize a static website with Nginx, automatically renew SSL certificates for your domain with Certbot and deploying to your Docker host.**](https://docs.blackboard.com/learn/How%20to%20dockerize%20a%20static%20website%20with%20Nginx%20automatically%20renew%20SSL%20certificates%20for%20your%20domain%20with Certbot%20andvdeploying%20to%20your%20Docker%20host.html) 
+This is the full project source and directory layout behind the *to be written* Blackboard article [**How to dockerize a static website with Nginx, automatically renew SSL certificates for your domain with Certbot and deploying to your Docker host.**](https://docs.blackboard.com/learn/Dockerizing%20NGINX.html) 
 
 This setup is useful for routing microservices, and LTI or REST applications using NGINX.
 
