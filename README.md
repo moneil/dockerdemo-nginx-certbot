@@ -1,8 +1,8 @@
-# Example static website with Docker, Nginx and Certbot
+# Setting up a website with Docker, Nginx and Certbot
 
 April 04, 2020
 
-This is the full project source and directory layout behind the *to be written* Blackboard article [**How to dockerize a static website with Nginx, automatically renew SSL certificates for your domain with Certbot and deploying to your Docker host.**](https://docs.blackboard.com/learn/Dockerizing%20NGINX.html) 
+This is the full project source and directory layout behind the *to be written* Blackboard article [**Dockerizing NGINX**](https://docs.blackboard.com/learn/Dockerizing%20NGINX.html) which presents in more detail how to dockerize a static website with Nginx, automatically renew SSL certificates for your domain with Certbot and deploying to your Docker host.
 
 This setup is useful for routing microservices, and LTI or REST applications using NGINX.
 
