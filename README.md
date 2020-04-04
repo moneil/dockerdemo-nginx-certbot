@@ -6,7 +6,7 @@ This is the full project source and directory layout behind the *to be written* 
 
 This setup is useful for routing microservices, and LTI or REST applications using NGINX.
 
-A huge thank you to Vic Shóstakkoddr (https://github.com/koddr) (aka Koddr) for the basis of this project...[Dev.to](https://dev.to/koddr/how-to-dockerize-your-static-website-with-nginx-automatic-renew-ssl-for-domain-by-certbot-and-deploy-it-to-digitalocean-4cjc) @ 27 Jan 2020.
+A huge thank you to [Vic Shóstakkoddr](https://github.com/koddr) (aka Koddr) for the basis of this project!
 
 ## Requirements
 
