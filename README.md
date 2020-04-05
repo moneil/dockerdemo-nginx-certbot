@@ -13,6 +13,12 @@ A huge thank you to [Vic Shóstakkoddr](https://github.com/koddr) (aka Koddr) fo
 - Docker `19.03.6, build 369ce74a3c+`
 - Docker-compose `1.21.2, build a133471+`
 
+ubuntu@ip-172-30-0-159:~/nginx$ docker -v
+Docker version 18.09.7, build 2d0083d
+ubuntu@ip-172-30-0-159:~/nginx$ docker-compose -v
+docker-compose version 1.8.0, build unknown
+ubuntu@ip-172-30-0-159:~/nginx$
+
 ## Usage
 Deploying this project is done in ten easy steps which are individually outlined below:
 
@@ -31,7 +37,7 @@ These steps must be done in order.
 ## Step 1: Create your Docker host system and FQDN
 This how-to does not delve into standing up a server and network setup. For the purposes of this project I used an Amazon AWS Ubuntu AMI and used noip.com for establishing a test domain.
 
-Once you have your test domain up, you should be able to ssh to your server using the username@sub.domain.tld e.g. `$ ssh -i <your aws .pem> ubuntu@sub.domain.tld`
+Once you have your test domain up, you should be able to ssh to your server using the username@sub.domain.tld e.g. `$ ssh -i <your aws .pem> ubuntu@<insert your FQDN>`
 
 Make certain that the following ports are open on your Docker host system:
 
@@ -62,6 +68,45 @@ In all cases replace site.domain.tld with your FQDN.
 
 To discover the files on your system you may run: `$ grep -rl "site.domain.tld" .` 
 
+You may also run a search and replace: `grep -rlZ 'site.domain.tld' . | xargs -0 sed -i.bak 's/site.domain.tld/<insert your FQDN>/g'`
+
+Test success: 
+
+```
+$ grep -rl "site.domain.tld" .
+nginx/.git/index.bak
+nginx/docker-compose.prod.yml.bak
+nginx/README.md.bak
+nginx/webserver/nginx/default.conf.bak
+nginx/webserver/nginx/site.domain.tld.bak
+
+$ grep -rl "<insert your FQDN>" .
+nginx/.git/index
+nginx/docker-compose.prod.yml
+nginx/README.md
+nginx/webserver/nginx/default.conf
+nginx/webserver/nginx/site.domain.tld
+
+```
+and then clean up the .bak files: `grep -rlZ 'site.domain.tld' . | xargs -0 rm`
+
+Test Success:
+```
+$ grep -rl "site.domain.tld" .
+nginx/.git/index.bak
+nginx/docker-compose.prod.yml.bak
+nginx/README.md.bak
+nginx/webserver/nginx/default.conf.bak
+nginx/webserver/nginx/site.domain.tld.bak
+
+$ grep -rl "your FQDN" .
+nginx/.git/index
+nginx/docker-compose.prod.yml
+nginx/README.md
+nginx/webserver/nginx/default.conf
+nginx/webserver/nginx/site.domain.tld
+
+``
 
 ## Step 4: Rename NGINX FQDN config file
 Rename the `./webserver/nginx/site.domain.tld` file to `./webserver/nginx/<FQDN>`
@@ -71,22 +116,53 @@ If `$ docker --version` and `docker-compose --version` do not return with the re
 
 Installation instructions are available on the [Docker website](https://docs.docker.com/install/)
 
+There are some post install steps required to run the scripts/docker as a non-root user:
+
+1. Add the Docker group: `$ sudo groupadd docker`
+2. Add your user to the group: `$ sudo usermod -aG docker $USER`
+
+Log out and log back in so that your group membership is re-evaluated.
+
+You should now be able to run docker as a non-root user:
+`$ docker run hello-world`
+
+To start docker deamon on boot:
+`$ sudo systemctl enable docker`
+
+Find the newest version of docker-compose on the release page at GitHub or by curling the API if you have jq installed - follow prompts:
+
+`$ VERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/latest | jq .name -r)`
+
+Download and set permissions:
+
+```
+$ DESTINATION=/usr/local/bin/docker-compose
+$ sudo curl -L https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-$(uname -s)-$(uname -m) -o $DESTINATION
+$ sudo chmod 755 $DESTINATION
+```
+
+
 ## Step 6: Docker host - Check configuration of `Certbot`
 To check the configuration of `Certbot` and create a test certificate, start the process of obtaining SSL certificate in test mode:
 
 ```
-$ make certbot-test DOMAINS="site.com www.site.com" EMAIL=mail@site.com
+$ make certbot-test DOMAINS="your FQDN" EMAIL=your@email
 ```
 If you see `Congratulations!` Let's Encrypt can reach your server and create  certificates. If not check your network/FQDN for errors (You should be able to ssh to the docker host using the FQDN. 
 
 Note that Let's Encrypt limits certificate request attempts to 50 per week. Do not continue until you have successfully tested that certbot can access your system and that the FQDNs are accurate in the above files.
 
+
+
 ## Step 7: Docker host - create a production certificate
 Now that you know certbot can reach your Docker host via your FQDN, you can request a production Let's Encrypt certificate:
 
 ```
-$ make certbot-prod DOMAINS="site.com www.site.com" EMAIL=mail@site.com
+$ make certbot-prod DOMAINS="your FQDN" EMAIL=your@email
 ```
+When prompted select: 2) Remove registered domains and continue
+
+If you see `Congratulations!` Let's Encrypt can reach your server and create  certificates. If not check your network/FQDN for errors (You should be able to ssh to the docker host using the FQDN. 
 
 When this process completes you may test your NGINX configuration...
 
@@ -96,11 +172,11 @@ When this process completes you may test your NGINX configuration...
 $ make deploy-test
 ```
 
-If you have no errors you may deploy the container to production.
+If you have no errors you may ctrl-c to exit the script.
 
 ## Step 9: Docker host: deploy NGINX
 
-No errors? Go to your static website to production:
+You may now start your static website in production:
 
 ```
 $ make deploy-prod
@@ -113,6 +189,8 @@ Here is where you can use `$ docker logs` to see the results or troubleshoot.
 `$ docker logs bfc6b902a4e6`
 
 ## Success!
+Congratulations! 
+
 You have deployed an SSL secured NGINX container which will auto-refresh the certificate following Let's Encrypt best practices.
 
 You may now edit the file in `./webserver/nginx/<FQDN>` to route requests to your services or applications by adding location proxies.
