@@ -33,6 +33,12 @@ This how-to does not delve into standing up a server and network setup. For the 
 
 Once you have your test domain up, you should be able to ssh to your server using the username@sub.domain.tld e.g. `$ ssh -i <your aws .pem> ubuntu@sub.domain.tld`
 
+Make certain that the following ports are open on your Docker host system:
+
+1. ssh:22
+1. http:80
+1. https:443
+
 ## Step 2: GIT Setup
 ### Clone this repository
 This step is optional for your local system because you may choose instead to clone to your Docker host, make edits there, and push to your github repo via a terminal session. These instructions assume you are working on the Docker host only.
