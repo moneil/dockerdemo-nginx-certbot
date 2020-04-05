@@ -18,29 +18,31 @@ Deploying this project is done in ten easy steps which are individually outlined
 
 1. Create your Docker host system and FQDN (required)
 2. GIT setup
-3. Edit the filed to reflect the Docker host FQDN in the config and yaml files
+3. Edit files to reflect the Docker host FQDN in the config and yaml files
 4. Rename the NGINX FQDN config file
-4. Docker host - Install Docker and docker-compose executables
+5. Docker host - Install Docker and docker-compose executables
 6. Docker host - Check configuration of `Certbot` 
-8. Docker host - Create a production certificate
-9. Docker host - test NGINX configuration
-10. Docker host - deploy NGINX
+7. Docker host - Create a production certificate
+8. Docker host - Test NGINX configuration
+9. Docker host - Deploy NGINX
 
-Note that while the below details are sufficient for setting up and deploying this project, you may find further 
+These steps must be done in order.
 
 ## Step 1: Create your Docker host system and FQDN
-It is beyond the scope of this how-to to delve into standing up a server and network setup. For the purposes of this project I used an Amazon AWS Ubuntu AMI and used noip.com for establishing a test domain.
+This how-to does not delve into standing up a server and network setup. For the purposes of this project I used an Amazon AWS Ubuntu AMI and used noip.com for establishing a test domain.
 
-Once you have your test domain up you should be able to ssh to your server using the username@sub.domain.tld e.g. `$ ssh -i <your aws .pem> ubuntu@sub.domain.tld`
+Once you have your test domain up, you should be able to ssh to your server using the username@sub.domain.tld e.g. `$ ssh -i <your aws .pem> ubuntu@sub.domain.tld`
 
 ## Step 2: GIT Setup
 ### Clone this repository
-This step is optional for your local system because you may choose instead to clone to your Docker host, make edits there, and push to your github repo via a terminal session. These instructions assume working on the Docker host only.
+This step is optional for your local system because you may choose instead to clone to your Docker host, make edits there, and push to your github repo via a terminal session. These instructions assume you are working on the Docker host only.
 
 ### GitHub
 SSH to your Docker host and clone this repo:
-	```$ git clone https://github.com/moneil/dockerdemo-nginx-certbot.git nginx
-cd nginx
+
+```
+$ git clone https://github.com/moneil/dockerdemo-nginx-certbot.git nginx
+$ cd nginx
 ```
 
 ## Step 3: Edit the host FQDN in the config and yaml files
@@ -52,7 +54,7 @@ The container and scripts need to know your system's FQDN. This information is c
 
 In all cases replace site.domain.tld with your FQDN.
 
-You may run `$ grep -rl "site.domain.tld" .` to discover the files on your system.
+To discover the files on your system you may run: `$ grep -rl "site.domain.tld" .` 
 
 
 ## Step 4: Rename NGINX FQDN config file
@@ -61,41 +63,41 @@ Rename the `./webserver/nginx/site.domain.tld` file to `./webserver/nginx/<FQDN>
 ## Step 5: Docker host - install Docker and docker-compose executables
 If `$ docker --version` and `docker-compose --version` do not return with the required versions then you must install them. 
 
-Installation instructions are available via the [Docker website](https://docs.docker.com/install/)
+Installation instructions are available on the [Docker website](https://docs.docker.com/install/)
 
 ## Step 6: Docker host - Check configuration of `Certbot`
-To check configuration of `Certbot` and create a test certificate, start the process of obtaining SSL certificate in test mode:
+To check the configuration of `Certbot` and create a test certificate, start the process of obtaining SSL certificate in test mode:
 
-```console
-make certbot-test DOMAINS="site.com www.site.com" EMAIL=mail@site.com
+```
+$ make certbot-test DOMAINS="site.com www.site.com" EMAIL=mail@site.com
 ```
 If you see `Congratulations!` Let's Encrypt can reach your server and create  certificates. If not check your network/FQDN for errors (You should be able to ssh to the docker host using the FQDN. 
 
-Note that Let's Encrypt limits certificate request attempts to 50 per week so do not continue until you have successfully tested that certbot can acceess your system and that the FQDNs are accurate in the above files.
+Note that Let's Encrypt limits certificate request attempts to 50 per week. Do not continue until you have successfully tested that certbot can access your system and that the FQDNs are accurate in the above files.
 
 ## Step 7: Docker host - create a production certificate
 Now that you know certbot can reach your Docker host via your FQDN, you can request a production Let's Encrypt certificate:
 
-```console
-make certbot-prod DOMAINS="site.com www.site.com" EMAIL=mail@site.com
+```
+$ make certbot-prod DOMAINS="site.com www.site.com" EMAIL=mail@site.com
 ```
 
 When this process completes you may test your NGINX configuration...
 
 
-## Docker host: test NGINX configuration
-```console
-make deploy-test
+## Step 8: Docker host: test NGINX configuration
+```
+$ make deploy-test
 ```
 
 If you have no errors you may deploy the container to production.
 
-## Docker host: deploy NGINX
+## Step 9: Docker host: deploy NGINX
 
-No errors? Go your static website to production:
+No errors? Go to your static website to production:
 
-```console
-make deploy-prod
+```
+$ make deploy-prod
 ```
 
 Here is where you can use `$ docker logs` to see the results or troubleshoot.
@@ -114,14 +116,6 @@ You may now edit the file in `./webserver/nginx/<FQDN>` to route requests to you
 
 - [Mark O'Neil](https://github.com/moneil).
 
-## Article assistance
-
-If you want to say «thank you»:
-
-1. Twit about article [on your Twitter](https://twitter.com/intent/tweet?text=How%20to%20dockerize%20your%20static%20website%20with%20Nginx%2C%20automatic%20renew%20SSL%20for%20domain%20by%20Certbot%20and%20deploy%20it%20to%20DigitalOcean%3F%20https%3A%2F%2Ftwitter.com%2Fintent%2Ftweet%3Ftext%3Dhttps%3A%2F%2Fdev.to%2Fkoddr%2Fhow-to-dockerize-your-static-website-with-nginx-automatic-renew-ssl-for-domain-by-certbot-and-deploy-it-to-digitalocean-4cjc).
-2. Add a GitHub Star and make Fork to this repository.
-
-Thanks for your support! 😘
 
 ## License
 
