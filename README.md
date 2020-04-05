@@ -10,14 +10,9 @@ A huge thank you to [Vic Shóstakkoddr](https://github.com/koddr) (aka Koddr) fo
 
 ## Requirements
 
+- Ubuntu 18.04.3 LTS (Bionic Beaver)
 - Docker `19.03.6, build 369ce74a3c+`
 - Docker-compose `1.21.2, build a133471+`
-
-ubuntu@ip-172-30-0-159:~/nginx$ docker -v
-Docker version 18.09.7, build 2d0083d
-ubuntu@ip-172-30-0-159:~/nginx$ docker-compose -v
-docker-compose version 1.8.0, build unknown
-ubuntu@ip-172-30-0-159:~/nginx$
 
 ## Usage
 Deploying this project is done in ten easy steps which are individually outlined below:
