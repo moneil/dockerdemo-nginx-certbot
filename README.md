@@ -15,7 +15,7 @@ A huge thank you to [Vic Shóstakkoddr](https://github.com/koddr) (aka Koddr) fo
 - Docker-compose `1.21.2, build a133471+`
 
 ## Usage
-Deploying this project is done in ten easy steps which are individually outlined below:
+Deploying this project is done in nine easy steps which are individually outlined below:
 
 1. Create your Docker host system and FQDN (required)
 2. GIT setup
@@ -101,7 +101,7 @@ nginx/README.md
 nginx/webserver/nginx/default.conf
 nginx/webserver/nginx/site.domain.tld
 
-``
+```
 
 ## Step 4: Rename NGINX FQDN config file
 Rename the `./webserver/nginx/site.domain.tld` file to `./webserver/nginx/<FQDN>`
@@ -135,7 +135,6 @@ $ DESTINATION=/usr/local/bin/docker-compose
 $ sudo curl -L https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-$(uname -s)-$(uname -m) -o $DESTINATION
 $ sudo chmod 755 $DESTINATION
 ```
-
 
 ## Step 6: Docker host - Check configuration of `Certbot`
 To check the configuration of `Certbot` and create a test certificate, start the process of obtaining SSL certificate in test mode:
